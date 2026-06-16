@@ -12,6 +12,7 @@ class AccessibilityManager {
         case permissionsNotGranted
         case noFocusedElement
         case secureFieldDetected
+        case secureDomainDetected
         case apiError(String)
         case clipboardFailed
     }
@@ -198,6 +199,41 @@ class AccessibilityManager {
         
         if titleResult == .success, let titleString = title as? String, !titleString.isEmpty {
             return titleString
+        }
+        
+        return nil
+    }
+    
+    /// Checks if the frontmost app is a browser currently on a blocked domain.
+    func isFrontmostAppOnBlockedDomain() -> Bool {
+        guard let appName = getFrontmostAppName() else { return false }
+        
+        if ["Google Chrome", "Safari", "Brave Browser", "Arc", "Microsoft Edge"].contains(appName) {
+            if let url = getBrowserURLViaAppleScript(appName: appName) {
+                print("Detected URL: \(url)")
+                return PrivacyManager.shared.isBlockedDomain(url: url)
+            }
+        }
+        return false
+    }
+    
+    /// Executes a safe, localized AppleScript to grab the active tab URL from supported browsers.
+    private func getBrowserURLViaAppleScript(appName: String) -> String? {
+        var scriptSource = ""
+        
+        if appName == "Safari" {
+            scriptSource = "tell application \"Safari\" to return URL of front document"
+        } else {
+            // Chrome, Brave, Arc, Edge all use the Chromium AppleScript dictionary
+            scriptSource = "tell application \"\(appName)\" to return URL of active tab of front window"
+        }
+        
+        if let script = NSAppleScript(source: scriptSource) {
+            var error: NSDictionary?
+            let output = script.executeAndReturnError(&error)
+            if error == nil, let url = output.stringValue {
+                return url
+            }
         }
         
         return nil

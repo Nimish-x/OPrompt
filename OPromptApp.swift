@@ -70,15 +70,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         Task {
             do {
+                // Pre-flight check: Ensure we aren't on a secure domain (e.g. banking)
+                if accessibilityManager.isFrontmostAppOnBlockedDomain() {
+                    throw AccessibilityManager.AccessibilityError.secureDomainDetected
+                }
+                
                 // Step 1: Read the text safely (now async because of fallback)
                 let rawText = try await accessibilityManager.readText()
                 print("Read text: \(rawText) from app: \(activeAppName ?? "Unknown") (\(activeWindowTitle ?? "Unknown Window"))")
                 
-                // Step 2: Send to Groq for optimization (passing the app context!)
-                let optimizedText = try await optimizer.optimize(rawText: rawText, appName: activeAppName, windowTitle: activeWindowTitle)
+                // Step 2: Privacy Filter - Redact any PII (Email, Phone, CC, SSN) before sending
+                let scrubbedText = PrivacyManager.shared.redactPII(from: rawText)
+                if rawText != scrubbedText {
+                    print("Privacy Warning: Sensitive information redacted before optimization.")
+                }
+                
+                // Step 3: Send to Groq for optimization (passing the scrubbed text and app context!)
+                let optimizedText = try await optimizer.optimize(rawText: scrubbedText, appName: activeAppName, windowTitle: activeWindowTitle)
                 print("Optimized text: \(optimizedText)")
                 
-                // Step 3: Put the text back
+                // Step 4: Put the text back
                 await MainActor.run {
                     Task {
                         do {
@@ -92,6 +103,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 
             } catch AccessibilityManager.AccessibilityError.secureFieldDetected {
                 print("Safe Mode: Ignored password field.")
+            } catch AccessibilityManager.AccessibilityError.secureDomainDetected {
+                print("Safe Mode: Execution blocked on secure domain.")
             } catch {
                 print("Optimization flow failed: \(error)")
             }

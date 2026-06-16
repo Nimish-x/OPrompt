@@ -42,7 +42,12 @@ class PromptOptimizer {
         Example Input: "what do u mean by persistency here"
         Example Output: "What do you mean by the term 'persistency' in this context?"
 
-        CRITICAL STEP 3: OUTPUT FORMATTING
+        CRITICAL STEP 3: PRIVACY TAGS
+        If you see tags like [REDACTED_EMAIL], [REDACTED_PHONE], etc., DO NOT get confused. Treat them as literal placeholders. 
+        Example Input: "remember my email [REDACTED_EMAIL]"
+        Example Output: "Act as a personal memory assistant and securely store the email address [REDACTED_EMAIL] for future reference."
+
+        CRITICAL STEP 4: OUTPUT FORMATTING
         OUTPUT ABSOLUTELY NOTHING EXCEPT THE FINAL OPTIMIZED STRING. DO NOT EXPLAIN YOUR DECISION.
         """
     }
