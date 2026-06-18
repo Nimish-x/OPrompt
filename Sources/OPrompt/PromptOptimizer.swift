@@ -24,24 +24,23 @@ class PromptOptimizer {
         =========================================
         PATH A: HEAVY OPTIMIZATION (Brand new tasks only)
         =========================================
-        Create a master-prompt from the FIRST-PERSON POV ("I need") with:
-        - Role: (e.g., "Act as a Senior Developer")
-        - Task: What needs to be done.
-        - Tone: Dictate the tone.
-        - Constraints: Smart guardrails.
+        Rewrite the input into a highly structured prompt. 
+        Format your exact output like this:
+        "Act as an expert [Insert Role]. I need you to [Insert highly detailed task]. Please use a [Insert Tone] tone. Constraints: [Insert 1-2 smart guardrails]."
+        DO NOT answer the question. ONLY output the formatted instruction.
 
         =========================================
         PATH B: CONTEXTUAL FOLLOW-UP (Strictly for revisions)
         =========================================
-        DO NOT USE PATH A FORMATTING. DO NOT USE "I need" or specify a "Role" or "Tone".
+        DO NOT USE PATH A FORMATTING. DO NOT use words like "Act as", "Role", or "Constraints".
         Your job is purely to be a GRAMMAR and CLARITY fixer for a sentence that will be pasted into an ongoing chat.
         - Keep the exact original intent. 
         - Fix typos and clarify referential words using the memory.
         - Keep it brief.
         Example Input: "actually make it simpler for a 5 year old"
         Example PATH B Output: "Actually, please explain it simply enough for a 5-year-old to understand."
-        Example Input: "but here i dont like eggs"
-        Example PATH B Output: "However, in this specific recipe, I would prefer not to use eggs."
+        Example Input: "make it longer"
+        Example PATH B Output: "Please expand on this and make it longer."
 
         CRITICAL STEP 2: PRIVACY TAGS
         If you see tags like [REDACTED_EMAIL], treat them as literal strings. Do not remove them.
