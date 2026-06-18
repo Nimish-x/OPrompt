@@ -101,9 +101,26 @@ class AccessibilityManager {
     
     // MARK: - Clipboard Fallback Logic
     
+    // Store previous clipboard items to restore them later
+    private var savedPasteboardItems: [NSPasteboardItem]?
+
     private func readFromClipboardFallback() async throws -> String {
         let pasteboard = NSPasteboard.general
         let previousChangeCount = pasteboard.changeCount
+        
+        // Save the current clipboard state before we mess with it
+        if let items = pasteboard.pasteboardItems {
+            // We need to create copies of the items to ensure they aren't lost when we clear the board
+            savedPasteboardItems = items.compactMap { item in
+                let newItem = NSPasteboardItem()
+                for type in item.types {
+                    if let data = item.data(forType: type) {
+                        newItem.setData(data, forType: type)
+                    }
+                }
+                return newItem
+            }
+        }
         
         // Attempt 1: Simulate Cmd+C to copy whatever is currently selected
         simulateKeystroke(keyCode: 8, useCommand: true) // 'C' key
@@ -142,6 +159,15 @@ class AccessibilityManager {
         
         // Simulate Cmd+V
         simulateKeystroke(keyCode: 9, useCommand: true) // 'V' key
+        
+        // Wait for OS to process Cmd+V, then restore previous clipboard state
+        try await Task.sleep(nanoseconds: 200_000_000) // 200ms
+        
+        if let itemsToRestore = savedPasteboardItems {
+            pasteboard.clearContents()
+            pasteboard.writeObjects(itemsToRestore)
+            savedPasteboardItems = nil // Clear out memory
+        }
     }
     
     private func simulateKeystroke(keyCode: CGKeyCode, useCommand: Bool) {

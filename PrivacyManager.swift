@@ -8,11 +8,13 @@ class PrivacyManager {
     
     // Built-in list of common sensitive domains (banking, finance, etc.)
     private let predefinedBlockedDomains: [String] = [
+        // US & Global Banks / Financial
         "paypal.com",
         "chase.com",
         "bankofamerica.com",
         "wellsfargo.com",
         "citi.com",
+        "citibank.com",
         "capitalone.com",
         "americanexpress.com",
         "discover.com",
@@ -21,6 +23,48 @@ class PrivacyManager {
         "vanguard.com",
         "stripe.com",
         "square.com",
+        "hsbc.com",
+        "barclays.com",
+        "santander.com",
+        "visa.com",
+        "mastercard.com",
+        "payoneer.com",
+        "wise.com",
+        "revolut.com",
+        
+        // Indian Banks
+        "hdfcbank.com",
+        "icicibank.com",
+        "onlinesbi.sbi",
+        "onlinesbi.com",
+        "sbi.co.in",
+        "axisbank.com",
+        "kotak.com",
+        "pnbindia.in",
+        "bankofbaroda.in",
+        "yesbank.in",
+        "indusind.com",
+        "idfcfirstbank.com",
+        "unionbankofindia.co.in",
+        "canarabank.com",
+        "standardchartered.com",
+        "sc.com",
+        
+        // Indian Wallets & Payment Gateways
+        "paytm.com",
+        "phonepe.com",
+        "freecharge.in",
+        "mobikwik.com",
+        "razorpay.com",
+        "cred.club",
+        
+        // Indian Government & Tax
+        "incometax.gov.in",
+        "uidai.gov.in",
+        "epfindia.gov.in",
+        "gst.gov.in",
+
+        // Common Secure prefixes/keywords
         "secure.",
         "login.",
         "auth."
