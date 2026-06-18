@@ -42,7 +42,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // 2. Start listening for the trigger (Cmd + Shift + O)
         hotkeyManager.startListening { [weak self] in
-            self?.handleOptimizationTrigger()
+            Task {
+                await self?.handleOptimizationTrigger()
+            }
         }
     }
     // MARK: - Core Execution Loop
