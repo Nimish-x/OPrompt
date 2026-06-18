@@ -238,6 +238,11 @@ class AccessibilityManager {
             if let url = getBrowserURLViaAppleScript(appName: appName) {
                 print("Detected URL: \(url)")
                 return PrivacyManager.shared.isBlockedDomain(url: url)
+            } else {
+                // FAIL CLOSED: If we are in a browser but can't read the URL (e.g., missing Automation permissions),
+                // we block execution by default to prevent accidental data leaks on secure sites.
+                print("Warning: Could not read URL for \(appName). Blocking execution as a privacy precaution.")
+                return true
             }
         }
         return false

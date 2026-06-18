@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     // AppStorage automatically saves this to macOS UserDefaults
-    @AppStorage("groqAPIKey") private var apiKey: String = ""
+    @State private var apiKey: String = KeychainHelper.shared.read() ?? ""
     @AppStorage("enableContextAwareMode") private var enableContextAwareMode: Bool = false
     
     var body: some View {
@@ -17,6 +17,13 @@ struct SettingsView: View {
                         
                         SecureField("Enter your gsk_... key here", text: $apiKey)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .onChange(of: apiKey) { newValue in
+                                if newValue.isEmpty {
+                                    KeychainHelper.shared.delete()
+                                } else {
+                                    KeychainHelper.shared.save(newValue)
+                                }
+                            }
                         
                         Text("Required for ultra-fast, cloud-based prompt optimization.")
                             .font(.caption)

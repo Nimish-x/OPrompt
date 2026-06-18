@@ -18,7 +18,7 @@ Simply press **Cmd + Shift + O** in *any* application (Chrome, Xcode, Notes, Sla
 *   **🧠 Intelligent Routing:** Differentiates between *new ideas* (which get a heavy 4-pillar optimization: Role, Task, Tone, Constraints) and *conversational follow-ups* (which bypass heavy optimization to preserve the target AI's context).
 *   **🔒 Context-Aware Soft Memory (Beta):** Maintains a short-term (15-minute) memory of your last 5 prompts to understand vague follow-ups (e.g., "make it shorter"). Memory is strictly isolated by App Name and Window Title, preventing context from bleeding between different browser tabs (e.g., ChatGPT vs. Claude).
 *   **🛡️ Robust Compatibility:** Uses native macOS Accessibility APIs (`AXUIElement`) for seamless text replacement, with an automatic smart Clipboard Fallback (`Cmd+C`/`Cmd+V`) for complex web apps (like Notion or ChatGPT).
-*   **🔐 Privacy First:** Actively scans and redacts Personally Identifiable Information (PII) like emails, phone numbers, credit cards, and SSNs before sending any data to the AI. Automatically blocks execution entirely if you invoke the hotkey on a recognized secure domain (e.g., banking portals).
+*   **🔐 Privacy First:** While optimization uses the cloud-based Groq API for speed and reasoning, OPrompt actively scans and redacts Personally Identifiable Information (PII) locally like emails, phone numbers, credit cards, and SSNs before sending *any* data to the AI. Automatically blocks execution entirely if you invoke the hotkey on a recognized secure domain (e.g., banking portals).
 
 ---
 
@@ -29,11 +29,6 @@ Simply press **Cmd + Shift + O** in *any* application (Chrome, Xcode, Notes, Sla
 ### The Settings Interface
 ![Settings View Placeholder](./assets/settings-ui.png)
 *A native SwiftUI settings window to manage your Groq API key, toggle Context-Aware Memory, and review the quick-start guide.*
-
-### In-Action Example
-![Before and After Placeholder](./assets/before-after.png)
-*Before: "write an essay on yoga day"*
-*After: "Act as an expert writer and compose a well-structured essay on International Yoga Day, incorporating historical context, health benefits..."*
 
 ---
 

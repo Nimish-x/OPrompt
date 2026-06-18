@@ -88,8 +88,9 @@ class PrivacyManager {
         redactedText = replaceMatches(in: redactedText, pattern: emailPattern, replacement: "[REDACTED_EMAIL]")
         
         // 2. Redact Phone Numbers
-        // Matches various formats: (123) 456-7890, 123-456-7890, 123.456.7890, +1 123 456 7890, or just straight 7-15 digits
-        let phonePattern = "(?:\\+?\\d{1,3}[- .]?)?\\(?\\d{3}\\)?[- .]?\\d{3}[- .]?\\d{4}|\\b\\d{7,15}\\b"
+        // Matches formatted phone numbers (e.g. (123) 456-7890, 123-456-7890, +1 123 456 7890).
+        // Removed the bare \b\d{7,15}\b match to prevent false positives on database IDs or regular numbers.
+        let phonePattern = "(?:\\+\\d{1,3}[- .]?)?\\(?\\d{3}\\)?[- .]?\\d{3}[- .]\\d{4}"
         redactedText = replaceMatches(in: redactedText, pattern: phonePattern, replacement: "[REDACTED_PHONE]")
         
         // 3. Redact Credit Card Numbers

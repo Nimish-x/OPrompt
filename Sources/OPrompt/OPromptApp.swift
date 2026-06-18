@@ -49,9 +49,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: - Core Execution Loop
     
     private func handleOptimizationTrigger() {
-        print("Optimization triggered...")
+        // print("Optimization triggered...")
         
-        let savedKey = UserDefaults.standard.string(forKey: "groqAPIKey") ?? ""
+        let savedKey = KeychainHelper.shared.read() ?? ""
         
         // Enforce the API key for Groq
         if savedKey.isEmpty {

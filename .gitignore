@@ -67,4 +67,7 @@ fastlane/test_output
 iOSInjectionProject/
 
 # Mac OS
-.DS_Storeproduct.md\ncontext.md\nMEMORY.md
+.DS_Store
+product.md
+context.md
+MEMORY.md

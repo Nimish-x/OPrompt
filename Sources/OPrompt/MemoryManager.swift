@@ -49,7 +49,6 @@ class MemoryManager {
         // 1. Check for Context Switch
         if currentContextKey != newContextKey {
             // User switched apps or tabs (e.g. from ChatGPT to Claude). Flush memory.
-            print("MemoryManager: Context switch detected (\(newContextKey)). Flushing previous memory.")
             clearMemory()
             currentContextKey = newContextKey
         }
@@ -57,7 +56,6 @@ class MemoryManager {
         // 2. Check for Time Decay (Sliding Expiration)
         if let lastEntry = historyBuffer.last {
             if now.timeIntervalSince(lastEntry.timestamp) > expirationTimeInterval {
-                print("MemoryManager: Context expired due to time decay. Flushing memory.")
                 clearMemory()
             }
         }
@@ -70,8 +68,6 @@ class MemoryManager {
         if historyBuffer.count > maxHistoryItems {
             historyBuffer.removeFirst()
         }
-        
-        print("MemoryManager: Added interaction to memory. Current buffer size: \(historyBuffer.count)")
     }
 
     /// Retrieves the current memory buffer formatted as a JSON string for the LLM system prompt.
