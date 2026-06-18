@@ -5,7 +5,7 @@ import AppKit
 /// The AccessibilityManager is responsible for interacting with other applications.
 /// It uses the macOS Accessibility API (AXUIElement) as a primary method,
 /// and falls back to Clipboard/Keystroke simulation for complex apps like Chrome.
-class AccessibilityManager {
+final class AccessibilityManager : @unchecked Sendable {
     
     /// Errors that can occur during accessibility operations.
     enum AccessibilityError: Error {

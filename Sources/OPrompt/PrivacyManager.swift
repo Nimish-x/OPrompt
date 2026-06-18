@@ -3,7 +3,7 @@ import SwiftUI
 
 /// PrivacyManager is responsible for detecting and redacting Personally Identifiable Information (PII)
 /// and managing the blocked domain list to prevent execution on secure websites.
-class PrivacyManager {
+final class PrivacyManager : Sendable {
     static let shared = PrivacyManager()
     
     // Built-in list of common sensitive domains (banking, finance, etc.)
