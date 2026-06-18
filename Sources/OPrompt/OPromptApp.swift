@@ -45,12 +45,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self?.handleOptimizationTrigger()
         }
     }
-    
     // MARK: - Core Execution Loop
-    
-    private func handleOptimizationTrigger() {
+
+    @MainActor
+    private func handleOptimizationTrigger() async {
         // print("Optimization triggered...")
-        
+
+        // Add a tiny delay to allow the OS to settle focus.
+        // If a system prompt (like Keychain access) just closed, or if the user is typing fast,
+        // this ensures NSWorkspace reads the actual target app (e.g. Chrome) and not a transient system process.
+        try? await Task.sleep(nanoseconds: 50_000_000) // 50ms
+
         let savedKey = KeychainHelper.shared.read() ?? ""
         
         // Enforce the API key for Groq
